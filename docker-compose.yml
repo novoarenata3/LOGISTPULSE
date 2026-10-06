@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  logistpulse-app:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - DB_HOST=logistpulse-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=logistpulse_pass
+      - DB_NAME=logistpulse_db
+    depends_on:
+      logistpulse-db:
+        condition: service_healthy
+
+  logistpulse-db:
+    image: postgres:15-alpine
+    container_name: logistpulse-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: logistpulse_pass
+      POSTGRES_DB: logistpulse_db
+    volumes:
+      - logistpulse_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d logistpulse_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  logistpulse_data:
