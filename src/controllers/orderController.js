@@ -1,12 +1,12 @@
 const OrderModel = require('../models/orderModel');
 
 module.exports = {
-  healthCheck: async (req, res) => {
+  listOrders: async (req, res) => {
     try {
-      await OrderModel.pool.query('SELECT 1');
-      res.status(200).json({ status: 'UP', service: 'LOGISTPULSE-API', database: 'CONNECTED' });
+      const orders = await OrderModel.getOrders();
+      res.status(200).json({ status: 'OK', service: 'LOGISTPULSE', data: orders });
     } catch (err) {
-      res.status(500).json({ status: 'DOWN', error: err.message });
+      res.status(500).json({ error: 'Error al listar pedidos', details: err.message });
     }
   },
 
@@ -23,15 +23,6 @@ module.exports = {
       });
     } catch (err) {
       res.status(500).json({ error: 'Error al registrar pedido', details: err.message });
-    }
-  },
-
-  listOrders: async (req, res) => {
-    try {
-      const orders = await OrderModel.getOrders();
-      res.status(200).json({ data: orders });
-    } catch (err) {
-      res.status(500).json({ error: 'Error al listar pedidos', details: err.message });
     }
   }
 };
