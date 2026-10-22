@@ -1,6 +1,6 @@
 # LOGISTPULSE - Gestión de Pedidos y Envíos
 
-## Descripción
+## Descripción del repositorio
 LOGISTPULSE es el esqueleto ejecutable del sistema operativo de trazabilidad y gestión de envíos, desarrollado con arquitectura MVC para Diseño de Sistemas (USFQ).
 
 ## Requisitos
